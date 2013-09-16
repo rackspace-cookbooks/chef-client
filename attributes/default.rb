@@ -62,6 +62,12 @@ default["chef_client"]["daemon_options"] = []
 # so they can be set as an array in this attribute.
 default["ohai"]["disabled_plugins"] = []
 
+# Use logrotate_app definition on supported platforms via config recipe
+# when chef_client["log_file"] is set.
+# Default rotate: 12; frequency: weekly
+default["chef_client"]["logrotate"]["rotate"] = 12
+default["chef_client"]["logrotate"]["frequency"] = "weekly"
+
 case node['platform_family']
 when "arch"
   default["chef_client"]["init_style"]  = "arch"
@@ -106,7 +112,7 @@ when "smartos"
   default["chef_client"]["method_dir"] = "/opt/local/lib/svc/method"
   default["chef_client"]["bin_dir"] = "/opt/local/bin"
 when "windows"
-  default["chef_client"]["init_style"]  = "winsw"
+  default["chef_client"]["init_style"]  = "windows"
   default["chef_client"]["conf_dir"]    = "C:/chef"
   default["chef_client"]["run_path"]    = "#{node["chef_client"]["conf_dir"]}/run"
   default["chef_client"]["cache_path"]  = "#{node["chef_client"]["conf_dir"]}/cache"
