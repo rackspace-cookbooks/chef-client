@@ -71,11 +71,12 @@ suites:
   - recipe[minitest-handler]
   - recipe[chef-client_test::service_upstart]
   - recipe[chef-client::upstart_service]
-  excludes: ["centos-5.9", "centos-6.4"]
+  excludes: ["centos-5.9"]
   attributes: {}
 
 - name: cron
   run_list:
+  - recipe[minitest-handler]
   - recipe[chef-client::cron]
   attributes: {}
 
@@ -120,6 +121,16 @@ suites:
     chef_client:
       cron:
         environment_variables: "FOO=BAR"
+
+# Test that the we can use the cron_d directory
+- name: cook-use_cron_d
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[chef-client::cron]
+  attributes:
+    chef_client:
+      cron:
+        use_cron_d: true
 
 # No longer necessary w/ COOK-2856
 # - name: cook-2317
